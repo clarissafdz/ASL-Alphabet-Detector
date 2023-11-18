@@ -1,4 +1,4 @@
-document.addEventListener("DOMContentLoaded", function () {
+ document.addEventListener("DOMContentLoaded", function () {
     const videoElement = document.getElementById('video');
     const canvasElement = document.getElementById('canvas');
     const canvasCtx = canvasElement.getContext('2d');
@@ -56,4 +56,4 @@ document.addEventListener("DOMContentLoaded", function () {
         }
         videoElement.srcObject = null;
     });
-});
+}); 

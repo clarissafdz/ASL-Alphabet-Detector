@@ -1,22 +1,59 @@
+@font-face {
+    font-family: 'Neue';
+    src: url('Neue/NeueMachina-Regular.otf') format('woff2'), /* Modern Browsers */
+         url('Neue/NeueMachina-Regular.otf') format('woff'); /* Older Browsers */
+    font-weight: normal;
+    font-style: normal;
+  }
+  
 body {
     font-family: 'Roboto', sans-serif;
     text-align: center;
     margin: 0;
     padding: 0;
-    background-color: #f0f0f0;
+    background-image: url('bg1.png');
+    background-size: cover; /* Adjust sizing as needed */
+    background-repeat: no-repeat; /* Prevent the image from repeating */
+    background-attachment: fixed; /* Fix the background image */
 }
-
+#title{
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 30px; 
+    margin-right: 1100px;
+    color:#f36703
+}
 video, canvas {
     position: absolute;
-    transform: scaleX(-1); 
+    transform: scaleX(-1);
+    margin-top: auto;
+    margin-bottom: auto;
+    margin: 0;
+    position: absolute;
+    top: 50%;
+    -ms-transform: translateY(-50%);
+    transform: translateY(-50%)scaleX(-1);
 }
 
 #exitButton {
+    font-family: 'Space Grotesk', sans-serif; 
     position: absolute;
-    bottom: 20px;
+    bottom: 40px;
     left: 50%;
     transform: translateX(-50%);
-    padding: 10px 20px;
+    padding: 8px 70px;
     font-size: 18px;
     cursor: pointer;
+    border-radius: 11px;
+    background-color: transparent;
+    color: #f0f0f0;
+    border-color: white;
+    border-width: 1px;
+    border-style: solid;
+}
+#instruction{
+    font-family: 'Neue', sans-serif;
+    color: #f0f0f0;
+    font-size: 60px;
+    margin-right: 887px;
+    margin-top: 300px;
 }
