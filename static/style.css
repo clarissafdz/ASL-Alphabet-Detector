@@ -8,7 +8,7 @@ body {
 
 video, canvas {
     position: absolute;
-    transform: scaleX(-1); /* Mirror the video */
+    transform: scaleX(-1); 
 }
 
 #exitButton {

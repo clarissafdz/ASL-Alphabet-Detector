@@ -4,14 +4,12 @@ document.addEventListener("DOMContentLoaded", function () {
     const canvasCtx = canvasElement.getContext('2d');
     const exitButton = document.getElementById('exitButton');
     
-    // Load the Handpose model.
     let model;
     handpose.load().then(loadedModel => {
         model = loadedModel;
         console.log("Handpose model loaded.");
     });
 
-    // Start video stream
     navigator.mediaDevices.getUserMedia({ video: true })
         .then(stream => {
             videoElement.srcObject = stream;
@@ -36,11 +34,9 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     }
 
-    // Draw hand landmarks
     function drawHand(predictions) {
         canvasCtx.clearRect(0, 0, canvasElement.width, canvasElement.height);
         predictions.forEach(prediction => {
-            // Draw landmarks
             for (let i = 0; i < prediction.landmarks.length; i++) {
                 const x = prediction.landmarks[i][0];
                 const y = prediction.landmarks[i][1];
@@ -52,7 +48,6 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
-    // Exit button functionality
     exitButton.addEventListener('click', function () {
         const stream = videoElement.srcObject;
         if (stream) {
