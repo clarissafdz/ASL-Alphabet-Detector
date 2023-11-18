@@ -1,0 +1,16 @@
+body {
+    font-family: 'Roboto', sans-serif;
+}
+
+video {
+    border: 3px solid #333;
+    display: block;
+    margin: 0 auto;
+    transform: scaleX(-1); /* Flips the video horizontally */
+}
+
+#exitButton {
+    display: block;
+    margin: 0 auto; /* Centers the button */
+    font-family: 'Roboto', sans-serif;
+}
