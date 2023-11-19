@@ -1,24 +1,52 @@
+<!-- templates/index.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ASL Alphabet Recognition</title>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@latest"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/handpose@latest"></script>
-    <link rel="preconnect" href="https://fonts.googleapis.com"> 
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;700&display=swap" rel="stylesheet">
+    <title>ASL Detection</title>
 </head>
 <body>
-    <h1 id="title">ASL ALPHABET DETECTOR</h1>
-    <video id="video" width="640" height="480" autoplay playsinline></video>
-    <canvas id="canvas" width="640" height="480"></canvas>
-    <button id="captureButton">Capture Gesture</button>
-    <div id="prediction">Prediction: <span id="predictedLetter"></span></div>
-    <script src="{{ url_for('static', filename='camera.js') }}"></script>
-    <!-- Add additional JavaScript for handling predictions here if needed -->
+
+<video id="video" width="640" height="480" autoplay></video>
+<button id="startButton">Start Analysis</button>
+<h2 id="prediction"></h2>
+
+<script>
+    const video = document.getElementById('video');
+    const predictionElement = document.getElementById('prediction');
+    const startButton = document.getElementById('startButton');
+
+    // Prompt the user for permission, get the video stream
+    navigator.mediaDevices.getUserMedia({ video: true })
+        .then(stream => video.srcObject = stream)
+        .catch(console.error);
+
+    startButton.addEventListener('click', () => {
+        setInterval(() => {
+            sendFrameForPrediction();
+        }, 500); // Capture and send frames every 500 ms
+    });
+
+    function sendFrameForPrediction() {
+        const canvas = document.createElement('canvas');
+        canvas.width = video.videoWidth;
+        canvas.height = video.videoHeight;
+        canvas.getContext('2d').drawImage(video, 0, 0);
+        canvas.toBlob(blob => {
+            const formData = new FormData();
+            formData.append('frame', blob);
+            fetch('/predict-frame', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                predictionElement.textContent = `Prediction: ${data.prediction}`;
+            })
+            .catch(console.error);
+        }, 'image/jpeg');
+    }
+</script>
+
 </body>
 </html>
