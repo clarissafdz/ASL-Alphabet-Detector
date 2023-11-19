@@ -28,6 +28,7 @@ def preprocess_image(image):
     return tf.image.resize(image, [200, 200])
 
 # Data augmentation for the training set
+batch_size = 64  # Increased batch size
 train_datagen = ImageDataGenerator(
     preprocessing_function=preprocess_image,
     rotation_range=20,
@@ -49,7 +50,7 @@ train_generator = train_datagen.flow_from_dataframe(
     x_col='filename',
     y_col='class',
     target_size=(200, 200),
-    batch_size=32,
+    batch_size=batch_size,  # Increased batch size
     class_mode='categorical'
 )
 
@@ -59,13 +60,18 @@ valid_generator = valid_datagen.flow_from_dataframe(
     x_col='filename',
     y_col='class',
     target_size=(200, 200),
-    batch_size=32,
+    batch_size=batch_size,  # Increased batch size
     class_mode='categorical'
 )
 
 # Load the VGG16 model, pre-trained on ImageNet
 base_model = VGG16(input_shape=(200, 200, 3), include_top=False, weights='imagenet')
-base_model.trainable = False  # Freeze the VGG16 model
+base_model.trainable = True  # Fine-tune the VGG16 model
+
+# Fine-Tune VGG16
+fine_tune_at = 15  # Fine-tune from this layer onwards
+for layer in base_model.layers[:fine_tune_at]:
+    layer.trainable = False
 
 # Add custom layers on top of VGG16
 model = Sequential([
@@ -76,8 +82,8 @@ model = Sequential([
     Dense(len(train_generator.class_indices), activation='softmax')
 ])
 
-# Compile the model
-model.compile(optimizer=Adam(lr=1e-4), loss='categorical_crossentropy', metrics=['accuracy'])
+# Compile the model with adjusted learning rate
+model.compile(optimizer=Adam(lr=1e-5), loss='categorical_crossentropy', metrics=['accuracy'])
 
 # Callbacks
 checkpoint = ModelCheckpoint('asl_alphabet_model_vgg16', save_best_only=True, verbose=1, monitor='val_accuracy', mode='max')
@@ -88,7 +94,7 @@ reduce_lr = ReduceLROnPlateau(monitor='val_loss', factor=0.2, patience=5, min_lr
 history = model.fit(
     train_generator,
     steps_per_epoch=len(train_generator),
-    epochs=50,
+    epochs=1,  # Adjusted number of epochs
     validation_data=valid_generator,
     validation_steps=len(valid_generator),
     class_weight=class_weights,
@@ -96,7 +102,5 @@ history = model.fit(
 )
 
 # Save the final model in TensorFlow SavedModel format
-model.save('final_asl_alphabet_model')
+model.save('final_asl_alphabet_model2')
 
-# Replace 'path_to_your_train_annotations.csv', 'path_to_your_valid_annotations.csv', 
-# 'path_to_your_training_images', and 'path_to_your_validation_images' with the actual paths to your files.
