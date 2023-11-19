@@ -2,24 +2,12 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hand Tracking App</title>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+    <title>ASL Detection</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@latest"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/handpose@latest"></script>
-    <link rel="preconnect" href="https://fonts.googleapis.com"> 
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;700&display=swap" rel="stylesheet">
-
-
 </head>
 <body>
-    <h1 id="title">ASL ALPHABET DETECTOR</h1>
-    <video id="video" width="640" height="480" autoplay playsinline></video>
-    <canvas id="canvas" width="640" height="480"></canvas>
-    <button id="exitButton">EXIT</button>
-    <h2 id="instruction">Raise your hand,<br>let us do the rest.</h2>
-    <script src="{{ url_for('static', filename='camera.js') }}"></script>
+    <button id="startButton">Start Analysis</button>
+    <h2 id="prediction"></h2>
+    <img id="filteredVideo" src="/video-feed" width="600" height="350" />
 </body>
 </html>
