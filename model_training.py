@@ -46,11 +46,12 @@ valid_generator = datagen.flow_from_dataframe(
 
 # Define the model
 model = tf.keras.models.Sequential([
-    # Add your model layers here
-    # Example:
-    tf.keras.layers.Conv2D(32, (3,3), activation='relu', input_shape=(200, 200, 3)),
+    tf.keras.layers.Conv2D(32, (3, 3), activation='relu', input_shape=(200, 200, 3)),
     tf.keras.layers.MaxPooling2D(2, 2),
-    # ... more layers ...
+    tf.keras.layers.Conv2D(64, (3, 3), activation='relu'),
+    tf.keras.layers.MaxPooling2D(2, 2),
+    tf.keras.layers.Flatten(),
+    tf.keras.layers.Dense(128, activation='relu'),
     tf.keras.layers.Dense(len(train_generator.class_indices), activation='softmax')
 ])
 
