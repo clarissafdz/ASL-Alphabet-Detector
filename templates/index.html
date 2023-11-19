@@ -1,53 +1,13 @@
-<!-- templates/index.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>ASL Detection</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
-
-<video id="video" width="640" height="480" autoplay></video>
-<button id="startButton">Start Analysis</button>
-<h2 id="prediction"></h2>
-
-<script>
-    const video = document.getElementById('video');
-    const predictionElement = document.getElementById('prediction');
-    const startButton = document.getElementById('startButton');
-
-    // Prompt the user for permission, get the video stream
-    navigator.mediaDevices.getUserMedia({ video: true })
-        .then(stream => video.srcObject = stream)
-        .catch(console.error);
-
-    startButton.addEventListener('click', () => {
-        setInterval(() => {
-            sendFrameForPrediction();
-        }, 100); // Capture and send frames every 100 ms
-    });
-
-    function sendFrameForPrediction() {
-        const canvas = document.createElement('canvas');
-        canvas.width = video.videoWidth;
-        canvas.height = video.videoHeight;
-        canvas.getContext('2d').drawImage(video, 0, 0);
-        canvas.toBlob(blob => {
-            const formData = new FormData();
-            formData.append('frame', blob);
-            fetch('/predict-frame', {
-                method: 'POST',
-                body: formData
-            })
-            .then(response => response.json())
-            .then(data => {
-                predictionElement.textContent = `Prediction: ${data.prediction}`;
-            })
-            .catch(console.error);
-        }, 'image/jpeg');
-    }
-</script>
-
+    <button id="startButton">Start Analysis</button>
+    <h2 id="prediction"></h2>
+    <img id="filteredVideo" src="/video-feed" width="600" height="350" />
 </body>
 </html>
-

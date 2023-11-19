@@ -34,7 +34,7 @@ video, canvas {
     transform: translateY(-50%)scaleX(-1);
 }
 
-#exitButton {
+#startButton {
     font-family: 'Space Grotesk', sans-serif; 
     position: absolute;
     bottom: 40px;
